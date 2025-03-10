@@ -44,21 +44,17 @@ const connection = {
 };
 
 // Initialize Express app
-const app = express();
-var corsOptions = {
-  origin: "*",
-  allowedHeaders: [
-    "Content-Type",
-    "Authorization",
-    "Content-Length",
-    "X-Requested-With",
-    "Accept",
-    "Origin",
-    "Access-Control-Allow-Headers",
-  ],
-  methods: ["GET", "POST", "DELETE", "OPTIONS"],
+const app = express();// Define allowed domains
+
+const corsOptions = {
+  origin: ['http://localhost:3010', 'https://valmira-frontend.vercel.app'],
+  credentials: true,
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  allowedHeaders: ['Content-Type', 'Authorization']
 };
-app.options("*", cors());
+
+app.use(cors(corsOptions));
+
 app.use(express.json());
 
 // Helper functions

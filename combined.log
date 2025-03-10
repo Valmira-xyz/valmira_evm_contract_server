@@ -161,3 +161,94 @@
 {"level":"info","message":"Reading compiled contract:","path":"artifacts/contracts/ERC20/Crypto_Summit.sol/Crypto_Summit.json","timestamp":"2025-03-10T05:18:13.793Z"}
 {"bytecodeLength":47850,"fileName":"Crypto_Summit","level":"info","message":"Contract compilation successful","timestamp":"2025-03-10T05:18:13.793Z"}
 {"environment":"development","level":"info","message":"Contract server started:","port":"32156","timestamp":"2025-03-10T07:23:20.133Z","workers":12}
+{"level":"info","message":"User authenticated successfully: 67ce9697f75146ff263ca7e5","timestamp":"2025-03-10T07:54:46.640Z"}
+{"level":"info","message":"Processing new contract creation request:","socialLinks":{"discord":"not provided","telegram":"not provided","twitter":"not provided","website":"not provided"},"templateNumber":0,"timestamp":"2025-03-10T07:54:46.641Z","tokenName":"Flappybird"}
+{"level":"info","message":"No social links provided, skipping header modification","timestamp":"2025-03-10T07:54:46.642Z"}
+{"level":"info","message":"Preparing contract file:","newFileName":"Flappybird","originalTemplate":"MemeToken","timestamp":"2025-03-10T07:54:46.642Z"}
+{"level":"info","message":"No existing contract file found at: contracts/ERC20/Flappybird.sol","timestamp":"2025-03-10T07:54:46.643Z"}
+{"fileName":"Flappybird","filePath":"contracts/ERC20/Flappybird.sol","level":"info","message":"Contract file created successfully:","timestamp":"2025-03-10T07:54:46.645Z"}
+{"level":"info","message":"Compiling contract...","timestamp":"2025-03-10T07:54:46.645Z"}
+{"level":"info","message":"Compilation output:","stdout":"Generating typings for: 9 artifacts in dir: typechain for target: ethers-v5\nSuccessfully generated 17 typings!\nCompiled 1 Solidity file successfully (evm target: paris).\n","timestamp":"2025-03-10T07:54:48.480Z"}
+{"level":"info","message":"Reading compiled contract:","path":"artifacts/contracts/ERC20/Flappybird.sol/Flappybird.json","timestamp":"2025-03-10T07:54:48.481Z"}
+{"bytecodeLength":47850,"fileName":"Flappybird","level":"info","message":"Contract compilation successful","timestamp":"2025-03-10T07:54:48.482Z"}
+{"level":"info","message":"User authenticated successfully: 67ce9697f75146ff263ca7e5","timestamp":"2025-03-10T07:54:55.255Z"}
+{"level":"info","message":"Processing new contract creation request:","socialLinks":{"discord":"not provided","telegram":"not provided","twitter":"not provided","website":"not provided"},"templateNumber":0,"timestamp":"2025-03-10T07:54:55.255Z","tokenName":"Flappybird"}
+{"level":"info","message":"No social links provided, skipping header modification","timestamp":"2025-03-10T07:54:55.255Z"}
+{"level":"info","message":"Preparing contract file:","newFileName":"Flappybird","originalTemplate":"MemeToken","timestamp":"2025-03-10T07:54:55.255Z"}
+{"fileName":"Flappybird","filePath":"contracts/ERC20/Flappybird.sol","level":"info","message":"Contract file created successfully:","timestamp":"2025-03-10T07:54:55.256Z"}
+{"level":"info","message":"Compiling contract...","timestamp":"2025-03-10T07:54:55.257Z"}
+{"level":"info","message":"Compilation output:","stdout":"Nothing to compile\nNo need to generate any newer typings.\n","timestamp":"2025-03-10T07:54:56.159Z"}
+{"level":"info","message":"Reading compiled contract:","path":"artifacts/contracts/ERC20/Flappybird.sol/Flappybird.json","timestamp":"2025-03-10T07:54:56.159Z"}
+{"bytecodeLength":47850,"fileName":"Flappybird","level":"info","message":"Contract compilation successful","timestamp":"2025-03-10T07:54:56.160Z"}
+{"level":"info","message":"User authenticated successfully: 67ce9697f75146ff263ca7e5","timestamp":"2025-03-10T07:55:01.432Z"}
+{"level":"info","message":"Processing new contract creation request:","socialLinks":{"discord":"not provided","telegram":"not provided","twitter":"not provided","website":"not provided"},"templateNumber":0,"timestamp":"2025-03-10T07:55:01.432Z","tokenName":"Flappybird"}
+{"level":"info","message":"No social links provided, skipping header modification","timestamp":"2025-03-10T07:55:01.432Z"}
+{"level":"info","message":"Preparing contract file:","newFileName":"Flappybird","originalTemplate":"MemeToken","timestamp":"2025-03-10T07:55:01.432Z"}
+{"fileName":"Flappybird","filePath":"contracts/ERC20/Flappybird.sol","level":"info","message":"Contract file created successfully:","timestamp":"2025-03-10T07:55:01.433Z"}
+{"level":"info","message":"Compiling contract...","timestamp":"2025-03-10T07:55:01.434Z"}
+{"level":"info","message":"Compilation output:","stdout":"Nothing to compile\nNo need to generate any newer typings.\n","timestamp":"2025-03-10T07:55:02.333Z"}
+{"level":"info","message":"Reading compiled contract:","path":"artifacts/contracts/ERC20/Flappybird.sol/Flappybird.json","timestamp":"2025-03-10T07:55:02.333Z"}
+{"bytecodeLength":47850,"fileName":"Flappybird","level":"info","message":"Contract compilation successful","timestamp":"2025-03-10T07:55:02.334Z"}
+{"level":"info","message":"User authenticated successfully: 67ce9697f75146ff263ca7e5","timestamp":"2025-03-10T07:55:08.201Z"}
+{"level":"info","message":"Processing new contract creation request:","socialLinks":{"discord":"not provided","telegram":"not provided","twitter":"not provided","website":"not provided"},"templateNumber":0,"timestamp":"2025-03-10T07:55:08.201Z","tokenName":"Flappybird"}
+{"level":"info","message":"No social links provided, skipping header modification","timestamp":"2025-03-10T07:55:08.201Z"}
+{"level":"info","message":"Preparing contract file:","newFileName":"Flappybird","originalTemplate":"MemeToken","timestamp":"2025-03-10T07:55:08.202Z"}
+{"fileName":"Flappybird","filePath":"contracts/ERC20/Flappybird.sol","level":"info","message":"Contract file created successfully:","timestamp":"2025-03-10T07:55:08.203Z"}
+{"level":"info","message":"Compiling contract...","timestamp":"2025-03-10T07:55:08.203Z"}
+{"level":"info","message":"Compilation output:","stdout":"Nothing to compile\nNo need to generate any newer typings.\n","timestamp":"2025-03-10T07:55:09.081Z"}
+{"level":"info","message":"Reading compiled contract:","path":"artifacts/contracts/ERC20/Flappybird.sol/Flappybird.json","timestamp":"2025-03-10T07:55:09.081Z"}
+{"bytecodeLength":47850,"fileName":"Flappybird","level":"info","message":"Contract compilation successful","timestamp":"2025-03-10T07:55:09.083Z"}
+{"code":"JsonWebTokenError","error":"jwt malformed","level":"error","message":"Authentication failed:","timestamp":"2025-03-10T08:01:54.164Z"}
+{"code":"JsonWebTokenError","error":"jwt malformed","level":"error","message":"Authentication failed:","timestamp":"2025-03-10T08:01:57.065Z"}
+{"code":"JsonWebTokenError","error":"jwt malformed","level":"error","message":"Authentication failed:","timestamp":"2025-03-10T08:02:01.294Z"}
+{"code":"JsonWebTokenError","error":"jwt malformed","level":"error","message":"Authentication failed:","timestamp":"2025-03-10T08:02:04.182Z"}
+{"level":"info","message":"User authenticated successfully: 67ce9697f75146ff263ca7e5","timestamp":"2025-03-10T08:04:30.697Z"}
+{"level":"info","message":"Processing new contract creation request:","socialLinks":{"discord":"not provided","telegram":"not provided","twitter":"https://x.com/flappysolgame","website":"https://flappygame.money/"},"templateNumber":0,"timestamp":"2025-03-10T08:04:30.698Z","tokenName":"Flappybird"}
+{"level":"info","message":"Preparing contract file:","newFileName":"Flappybird","originalTemplate":"MemeToken","timestamp":"2025-03-10T08:04:30.698Z"}
+{"fileName":"Flappybird","filePath":"contracts/ERC20/Flappybird.sol","level":"info","message":"Contract file created successfully:","timestamp":"2025-03-10T08:04:30.699Z"}
+{"level":"info","message":"Compiling contract...","timestamp":"2025-03-10T08:04:30.699Z"}
+{"level":"info","message":"Compilation output:","stdout":"Generating typings for: 9 artifacts in dir: typechain for target: ethers-v5\nSuccessfully generated 17 typings!\nCompiled 1 Solidity file successfully (evm target: paris).\n","timestamp":"2025-03-10T08:04:32.642Z"}
+{"level":"info","message":"Reading compiled contract:","path":"artifacts/contracts/ERC20/Flappybird.sol/Flappybird.json","timestamp":"2025-03-10T08:04:32.642Z"}
+{"bytecodeLength":47850,"fileName":"Flappybird","level":"info","message":"Contract compilation successful","timestamp":"2025-03-10T08:04:32.643Z"}
+{"level":"info","message":"User authenticated successfully: 67ce9697f75146ff263ca7e5","timestamp":"2025-03-10T08:04:38.484Z"}
+{"level":"info","message":"Processing new contract creation request:","socialLinks":{"discord":"not provided","telegram":"not provided","twitter":"https://x.com/flappysolgame","website":"https://flappygame.money/"},"templateNumber":0,"timestamp":"2025-03-10T08:04:38.484Z","tokenName":"Flappybird"}
+{"level":"info","message":"Preparing contract file:","newFileName":"Flappybird","originalTemplate":"MemeToken","timestamp":"2025-03-10T08:04:38.484Z"}
+{"fileName":"Flappybird","filePath":"contracts/ERC20/Flappybird.sol","level":"info","message":"Contract file created successfully:","timestamp":"2025-03-10T08:04:38.486Z"}
+{"level":"info","message":"Compiling contract...","timestamp":"2025-03-10T08:04:38.486Z"}
+{"level":"info","message":"Compilation output:","stdout":"Nothing to compile\nNo need to generate any newer typings.\n","timestamp":"2025-03-10T08:04:39.380Z"}
+{"level":"info","message":"Reading compiled contract:","path":"artifacts/contracts/ERC20/Flappybird.sol/Flappybird.json","timestamp":"2025-03-10T08:04:39.381Z"}
+{"bytecodeLength":47850,"fileName":"Flappybird","level":"info","message":"Contract compilation successful","timestamp":"2025-03-10T08:04:39.381Z"}
+{"level":"info","message":"User authenticated successfully: 67ce9697f75146ff263ca7e5","timestamp":"2025-03-10T08:04:44.300Z"}
+{"level":"info","message":"Processing new contract creation request:","socialLinks":{"discord":"not provided","telegram":"not provided","twitter":"https://x.com/flappysolgame","website":"https://flappygame.money/"},"templateNumber":0,"timestamp":"2025-03-10T08:04:44.301Z","tokenName":"Flappybird"}
+{"level":"info","message":"Preparing contract file:","newFileName":"Flappybird","originalTemplate":"MemeToken","timestamp":"2025-03-10T08:04:44.301Z"}
+{"fileName":"Flappybird","filePath":"contracts/ERC20/Flappybird.sol","level":"info","message":"Contract file created successfully:","timestamp":"2025-03-10T08:04:44.302Z"}
+{"level":"info","message":"Compiling contract...","timestamp":"2025-03-10T08:04:44.302Z"}
+{"level":"info","message":"Compilation output:","stdout":"Nothing to compile\nNo need to generate any newer typings.\n","timestamp":"2025-03-10T08:04:45.202Z"}
+{"level":"info","message":"Reading compiled contract:","path":"artifacts/contracts/ERC20/Flappybird.sol/Flappybird.json","timestamp":"2025-03-10T08:04:45.202Z"}
+{"bytecodeLength":47850,"fileName":"Flappybird","level":"info","message":"Contract compilation successful","timestamp":"2025-03-10T08:04:45.203Z"}
+{"level":"info","message":"User authenticated successfully: 67ce9697f75146ff263ca7e5","timestamp":"2025-03-10T08:04:52.064Z"}
+{"level":"info","message":"Processing new contract creation request:","socialLinks":{"discord":"not provided","telegram":"not provided","twitter":"https://x.com/flappysolgame","website":"https://flappygame.money/"},"templateNumber":0,"timestamp":"2025-03-10T08:04:52.064Z","tokenName":"Flappybird"}
+{"level":"info","message":"Preparing contract file:","newFileName":"Flappybird","originalTemplate":"MemeToken","timestamp":"2025-03-10T08:04:52.064Z"}
+{"fileName":"Flappybird","filePath":"contracts/ERC20/Flappybird.sol","level":"info","message":"Contract file created successfully:","timestamp":"2025-03-10T08:04:52.065Z"}
+{"level":"info","message":"Compiling contract...","timestamp":"2025-03-10T08:04:52.065Z"}
+{"level":"info","message":"Compilation output:","stdout":"Nothing to compile\nNo need to generate any newer typings.\n","timestamp":"2025-03-10T08:04:52.962Z"}
+{"level":"info","message":"Reading compiled contract:","path":"artifacts/contracts/ERC20/Flappybird.sol/Flappybird.json","timestamp":"2025-03-10T08:04:52.963Z"}
+{"bytecodeLength":47850,"fileName":"Flappybird","level":"info","message":"Contract compilation successful","timestamp":"2025-03-10T08:04:52.963Z"}
+{"level":"info","message":"Received SIGINT signal, shutting down...","timestamp":"2025-03-10T08:17:34.776Z"}
+{"environment":"development","level":"info","message":"Contract server started:","port":"32156","timestamp":"2025-03-10T08:17:35.334Z","workers":12}
+{"level":"info","message":"Received SIGINT signal, shutting down...","timestamp":"2025-03-10T08:53:00.557Z"}
+{"environment":"development","level":"info","message":"Contract server started:","port":"32156","timestamp":"2025-03-10T08:53:11.955Z","workers":12}
+{"level":"info","message":"Received SIGINT signal, shutting down...","timestamp":"2025-03-10T08:55:16.606Z"}
+{"environment":"development","level":"info","message":"Contract server started:","port":"32156","timestamp":"2025-03-10T08:55:17.189Z","workers":12}
+{"level":"info","message":"Received SIGINT signal, shutting down...","timestamp":"2025-03-10T09:08:43.923Z"}
+{"environment":"development","level":"info","message":"Contract server started:","port":"32156","timestamp":"2025-03-10T09:08:44.512Z","workers":12}
+{"level":"info","message":"Received SIGINT signal, shutting down...","timestamp":"2025-03-10T09:12:00.015Z"}
+{"environment":"development","level":"info","message":"Contract server started:","port":"32156","timestamp":"2025-03-10T09:12:00.585Z","workers":12}
+{"level":"info","message":"Received SIGINT signal, shutting down...","timestamp":"2025-03-10T09:18:57.233Z"}
+{"environment":"development","level":"info","message":"Contract server started:","port":"32156","timestamp":"2025-03-10T09:18:57.833Z","workers":12}
+{"level":"info","message":"Received SIGINT signal, shutting down...","timestamp":"2025-03-10T09:22:05.299Z"}
+{"environment":"development","level":"info","message":"Contract server started:","port":"32156","timestamp":"2025-03-10T09:22:41.715Z","workers":12}
+{"level":"info","message":"Received SIGINT signal, shutting down...","timestamp":"2025-03-10T09:29:46.523Z"}
+{"environment":"development","level":"info","message":"Contract server started:","port":"32156","timestamp":"2025-03-10T09:29:47.143Z","workers":12}
+{"level":"info","message":"Received SIGINT signal, shutting down...","timestamp":"2025-03-10T12:03:54.750Z"}
+{"environment":"development","level":"info","message":"Contract server started:","port":"32156","timestamp":"2025-03-10T12:03:55.351Z","workers":12}
