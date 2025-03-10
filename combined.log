@@ -160,3 +160,4 @@
 {"level":"info","message":"Compilation output:","stdout":"Nothing to compile\nNo need to generate any newer typings.\n","timestamp":"2025-03-10T05:18:13.793Z"}
 {"level":"info","message":"Reading compiled contract:","path":"artifacts/contracts/ERC20/Crypto_Summit.sol/Crypto_Summit.json","timestamp":"2025-03-10T05:18:13.793Z"}
 {"bytecodeLength":47850,"fileName":"Crypto_Summit","level":"info","message":"Contract compilation successful","timestamp":"2025-03-10T05:18:13.793Z"}
+{"environment":"development","level":"info","message":"Contract server started:","port":"32156","timestamp":"2025-03-10T07:23:20.133Z","workers":12}

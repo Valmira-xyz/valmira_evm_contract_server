@@ -45,9 +45,20 @@ const connection = {
 
 // Initialize Express app
 const app = express();
-app.use(cors({
-  methods: ['GET', 'POST'],
-}));
+var corsOptions = {
+  origin: "*",
+  allowedHeaders: [
+    "Content-Type",
+    "Authorization",
+    "Content-Length",
+    "X-Requested-With",
+    "Accept",
+    "Origin",
+    "Access-Control-Allow-Headers",
+  ],
+  methods: ["GET", "POST", "DELETE", "OPTIONS"],
+};
+app.options("*", cors());
 app.use(express.json());
 
 // Helper functions
