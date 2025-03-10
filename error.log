@@ -1,0 +1,4 @@
+{"code":"JsonWebTokenError","error":"jwt malformed","level":"error","message":"Authentication failed:","timestamp":"2025-03-08T12:33:51.686Z"}
+{"code":"JsonWebTokenError","error":"jwt malformed","level":"error","message":"Authentication failed:","timestamp":"2025-03-08T12:33:54.345Z"}
+{"code":"JsonWebTokenError","error":"jwt malformed","level":"error","message":"Authentication failed:","timestamp":"2025-03-08T12:33:57.663Z"}
+{"code":"JsonWebTokenError","error":"jwt malformed","level":"error","message":"Authentication failed:","timestamp":"2025-03-08T12:34:00.327Z"}

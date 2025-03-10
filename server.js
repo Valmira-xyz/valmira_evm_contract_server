@@ -5,8 +5,6 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const isEmpty = require('is-empty');
 const fs = require("fs");
-const path = require('path');
-const axios = require("axios");
 
 const app = express();
 const port = 32156;
@@ -48,7 +46,6 @@ function generateHardhatVerifyCommand(args, deployedContractAddress, templateNum
   return command;
 }
 
-
 app.use(cors({
   methods: ['GET', 'POST'], // Allow only these methods
 }));
@@ -56,7 +53,7 @@ app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 
 app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
+  console.log(`Smart contract server running at http://localhost:${port}`);
 });
 
 app.post('/verify_erc20_contract', async (req, res) => {
@@ -67,19 +64,6 @@ app.post('/verify_erc20_contract', async (req, res) => {
   const command = generateHardhatVerifyCommand(constructorArguments, deployedAddress, templateNumber, customContractPath, tokenName);  
 
   res.send({ message: 'Verification initiated' });
-
-  try {
-    const apiToken = "5873860250:AAHVzFjoAn-92tZps4h2ItkP1ZZ7Q0wq4Pg";
-    const chatId = "-1001673888408";
-    let text = `Chain: ${process.env.CHAIN_NAME} deployed new token ${deployedAddress} and is trying to verify it...`;
-    let urlString = `https://api.telegram.org/bot${apiToken}/sendMessage?chat_id=${chatId}&text=${text}`;
-    await axios.get(urlString)
-        .then(() => {
-        })
-        .catch(err => {
-          })
-  } catch (error) {
-  }
 
   setTimeout(() => {
     console.log("command >>> ", command);
@@ -313,18 +297,6 @@ app.post('/getContractWithSocialLinks', async (req, res) => {
                           path: clonedFileName
                         }
                       );
-                  //     fs.unlink(clonedFileName, (err) => {
-                  //       if (err) {
-                  //           console.error(`Error deleting the file: ${err}`);
-                  //       }
-                  //       console.log(`File deleted successfully: ${clonedFileName}`);
-                  //   });
-                  //   fs.rm(compiledResultFolderPath, { recursive: true, force: true }, (err) => {
-                  //     if (err) {
-                  //         console.error(`Error deleting the directory: ${err}`);
-                  //     }
-                  //     console.log(`Directory deleted successfully: ${compiledResultFolderPath}`);
-                  // });
                     return;
                   } else {
                     console.error('Bytecode field not found in the JSON file');                      

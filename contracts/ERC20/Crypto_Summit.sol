@@ -484,25 +484,25 @@ contract ERC20 is Context, IERC20 {
     }
 
     function _transfer(
-        address sender,
-        address recipient,
+        address from,
+        address to,
         uint256 amount
     ) internal virtual {
-        require(sender != address(0), "ERC20: transfer from the zero address");
-        require(recipient != address(0), "ERC20: transfer to the zero address");
+        require(from != address(0), "ERC20: transfer from the zero address");
+        require(to != address(0), "ERC20: transfer to the zero address");
 
-        _beforeTokenTransfer(sender, recipient, amount);
+        _beforeTokenTransfer(from, to, amount);
 
-        uint256 senderBalance = _balances[sender];
+        uint256 senderBalance = _balances[from];
         require(senderBalance >= amount, "ERC20: transfer amount exceeds balance");
         unchecked {
-            _balances[sender] = senderBalance - amount;
+            _balances[from] = senderBalance - amount;
         }
-        _balances[recipient] += amount;
+        _balances[to] += amount;
 
-        emit Transfer(sender, recipient, amount);
+        emit Transfer(from, to, amount);
 
-        _afterTokenTransfer(sender, recipient, amount);
+        _afterTokenTransfer(from, to, amount);
     }
 
     function _beforeTokenTransfer(
@@ -519,12 +519,11 @@ contract ERC20 is Context, IERC20 {
 }
 
 /* Main Contract */
-contract UtilityToken is ERC20, Ownable {
+contract Crypto_Summit is ERC20, Ownable {
     using SafeMath for uint256;
 
-    IUniswapV2Router02 public  uniswapRouter;
+    IUniswapV2Router02 public uniswapRouter;
     address public uniswapPair;
-
     address public mkWallet;
 
     bool public tradingActive = false;
@@ -535,63 +534,62 @@ contract UtilityToken is ERC20, Ownable {
     uint256 public maxTxnSize;
     uint256 public swapTokensAtAmount;
     uint256 public maxWalletSize;
-
     uint256 public buyMarketFee;
-
     uint256 public sellMarketFee;
-
     uint256 public tokensForMarket;
 
     bool private swapping;
-
-    mapping(address => bool) private isBlackList;
-    mapping(address => bool) public isExcludedFromFees;
-    mapping(address => bool) public isExcludemaxTxnSize;
-
-    mapping(address => bool) public ammPairs;
-
-    event SellTaxChanged(uint256 _old, uint256 _new);
-    event BuyTaxChanged(uint256 _old, uint256 _new);
     
     constructor(
         string memory name_,
         string memory symbol_,
-        uint8 decimals_,
-        uint256 totalNativeSupply_,
-        address marketingWallet_,
-        uint256 buyFee_,
-        uint256 sellFee_
+        uint256 totalSupply_,
+        uint256 buyTax_,
+        uint256 sellTax_,
+        uint256 maxHoldingLimit_,
+        uint256 maxBuyLimit_,
+        uint256 maxSellLimit_,
+        address marketingWallet_
     ) ERC20(name_, symbol_) {
-        _decimals = decimals_;
+        require(buyTax_ <= 25, "Buy tax cannot exceed 25%");
+        require(sellTax_ <= 25, "Sell tax cannot exceed 25%");
+        require(maxHoldingLimit_ > 0, "Max holding limit must be greater than 0");
+        require(maxBuyLimit_ > 0, "Max buy limit must be greater than 0");
+        require(maxSellLimit_ > 0, "Max sell limit must be greater than 0");
+        require(marketingWallet_ != address(0), "Marketing wallet cannot be zero address");
+
+        _decimals = 18;
         mkWallet = marketingWallet_;
-        buyMarketFee = buyFee_;
-        sellMarketFee = sellFee_;
+        buyMarketFee = buyTax_;
+        sellMarketFee = sellTax_;
         
-        if (block.chainid == 1)
+        // Set PancakeSwap router based on chain ID
+        if (block.chainid == 56) { // BSC Mainnet
+            uniswapRouter = IUniswapV2Router02(0x10ED43C718714eb63d5aA57B78B54704E256024E);
+        } else if (block.chainid == 97) { // BSC Testnet
+            uniswapRouter = IUniswapV2Router02(0x9Ac64Cc6e4415144C455BD8E4837Fea55603e5c3);
+        } else if (block.chainid == 1) { // Ethereum Mainnet
             uniswapRouter = IUniswapV2Router02(0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D);
-        else if (block.chainid == 11155111)
+        } else if (block.chainid == 11155111) { // Sepolia Testnet
             uniswapRouter = IUniswapV2Router02(0xC532a74256D3Db42D0Bf7a0400fEFDbad7694008);
+        } else {
+            revert("Unsupported network");
+        }
+        
+        // Create pair with WETH
+        uniswapPair = IUniswapV2Factory(uniswapRouter.factory()).createPair(
+            address(this), 
+            uniswapRouter.WETH()
+        );
 
-        uniswapPair = IUniswapV2Factory(uniswapRouter.factory()).createPair(address(this), uniswapRouter.WETH());
-
-        isExcludemaxTxnSize[address(uniswapRouter)] = true;
-        isExcludemaxTxnSize[address(uniswapPair)] = true;
-        isExcludemaxTxnSize[owner()] = true;
-        isExcludemaxTxnSize[address(this)] = true;
-        isExcludemaxTxnSize[address(0xdead)] = true;
-
-        isExcludedFromFees[owner()] = true;
-        isExcludedFromFees[address(this)] = true;
-        isExcludedFromFees[address(0xdead)] = true;
-
-        ammPairs[address(uniswapPair)] = true;
-
-        uint256 totalSupply = totalNativeSupply_ * (10 ** _decimals);
+        uint256 totalSupply = totalSupply_ * (10 ** _decimals);
+        
+        // Set limits
+        maxTxnSize = maxBuyLimit_ * (10 ** _decimals);
+        maxWalletSize = maxHoldingLimit_ * (10 ** _decimals);
         swapTokensAtAmount = (totalSupply * 5) / 1000; // 0.5% swap wallet
 
-        maxTxnSize = (totalSupply * 2) / 100; // 2% from total supply maxTxnSize
-        maxWalletSize = (totalSupply * 2) / 100; // 2% from total supply maxWalletSize
-
+        // Mint initial supply
         _mint(msg.sender, totalSupply);
     }
 
@@ -640,21 +638,9 @@ contract UtilityToken is ERC20, Ownable {
         swapEnabled = true;
     }
 
-    function excludeFrommaxTxnSize(address addr, bool value) external onlyOwner {
-        isExcludemaxTxnSize[addr] = value;
-    }
-
-    function excludeFromFees(address account, bool value) external onlyOwner {
-        isExcludedFromFees[account] = value;
-    }
-
     function removeLimits() external onlyOwner returns (bool) {
         limitsInEffect = false;
         return true;
-    }
-
-    function updateSwapEnabled(bool enabled) external onlyOwner {
-        swapEnabled = enabled;
     }
 
     function updateMaxWalletSize(uint256 newNum) external onlyOwner {
@@ -675,27 +661,13 @@ contract UtilityToken is ERC20, Ownable {
     }
 
     function updateBuyFees(uint256 newMarketFee) external onlyOwner {
-        emit BuyTaxChanged(buyMarketFee, newMarketFee);
         buyMarketFee = newMarketFee;
         require(buyMarketFee <= 25, "Must keep fees at 25% or less");
     }
 
     function updateSellFees(uint256 newMarketFee) external onlyOwner {
-        
-        emit SellTaxChanged( sellMarketFee,  newMarketFee);
-
         sellMarketFee = newMarketFee;
-
         require(sellMarketFee <= 25, "Must keep fees at 25% or less");
-    }
-
-    function setAMMPair(address pair, bool value) external onlyOwner {
-        require(pair != uniswapPair, "The pair cannot be removed from ammPairs");
-        ammPairs[pair] = value;
-    }
-
-    function setBL(address addr, bool enable) external onlyOwner {
-        isBlackList[addr] = enable;
     }
 
     function swapBack() private {
@@ -703,42 +675,54 @@ contract UtilityToken is ERC20, Ownable {
         uint256 totalTokensToSwap = tokensForMarket;
         bool success;
 
-        if (contractBalance == 0 || totalTokensToSwap == 0)
+        if (contractBalance == 0 || totalTokensToSwap == 0) {
             return;
+        }
 
-        if (contractBalance > swapTokensAtAmount * 20)
+        if (contractBalance > swapTokensAtAmount * 20) {
             contractBalance = swapTokensAtAmount * 20;
+        }
 
         swapTokensForEth(contractBalance);
 
         tokensForMarket = 0;
 
-        (success, ) = address(mkWallet).call{ value: address(this).balance }("");
+        (success, ) = address(mkWallet).call{value: address(this).balance}("");
+        require(success, "Transfer to marketing wallet failed");
     }
 
     function swapTokensForEth(uint256 tokenAmount) private {
-        // generate the uniswap pair path of token -> weth
+        // Generate the uniswap pair path of token -> weth
         address[] memory path = new address[](2);
         path[0] = address(this);
         path[1] = uniswapRouter.WETH();
 
         _approve(address(this), address(uniswapRouter), tokenAmount);
 
-        // make the swap
-        uniswapRouter.swapExactTokensForETHSupportingFeeOnTransferTokens(
+        // Make the swap
+        try uniswapRouter.swapExactTokensForETHSupportingFeeOnTransferTokens(
             tokenAmount,
-            0, // accept any amount of ETH
+            0, // Accept any amount of ETH
             path,
             address(this),
             block.timestamp
-        );
+        ) {
+            // Swap successful
+        } catch {
+            // Swap failed, revert the approval
+            _approve(address(this), address(uniswapRouter), 0);
+            revert("Swap failed");
+        }
     }
 
-    function _transfer(address from, address to, uint256 amount) internal override {
+    function _transfer(
+        address from,
+        address to,
+        uint256 amount
+    ) internal override {
         require(from != address(0), "ERC20: transfer from the zero address");
         require(to != address(0), "ERC20: transfer to the zero address");
-        require(!isBlackList[from], "[from] black list");
-        require(!isBlackList[to], "[to] black list");
+        require(amount > 0, "Transfer amount must be greater than zero");
 
         if (amount == 0) {
             super._transfer(from, to, 0);
@@ -747,24 +731,40 @@ contract UtilityToken is ERC20, Ownable {
 
         if (limitsInEffect) {
             if (from != owner() &&
+                from != address(this) &&
                 to != owner() &&
+                to != address(this) &&
                 to != address(0) &&
                 to != address(0xdead) &&
                 !swapping) {
-                if (!tradingActive) {
-                    require(isExcludedFromFees[from] || isExcludedFromFees[to], "Trading is not active.");
-                }
+                
+                require(tradingActive, "Trading is not active.");          
 
-                //when buy
-                if (ammPairs[from] && !isExcludemaxTxnSize[to]) {
+                // When buy
+                if (from == address(uniswapPair) && 
+                    to != owner() && 
+                    to != address(this) && 
+                    to != address(0xdead) &&
+                    to != address(uniswapRouter) && 
+                    to != address(uniswapPair)) {
                     require(amount <= maxTxnSize, "Buy transfer amount exceeds the maxTxnSize.");
                     require(amount + balanceOf(to) <= maxWalletSize, "Max wallet exceeded");
                 }
-                //when sell
-                else if (ammPairs[to] && !isExcludemaxTxnSize[from]) {
+                // When sell
+                else if (to == address(uniswapPair) && 
+                    from != owner() && 
+                    from != address(this) && 
+                    from != address(0xdead) &&
+                    from != address(uniswapRouter) && 
+                    from != address(uniswapPair)) {
                     require(amount <= maxTxnSize, "Sell transfer amount exceeds the maxTxnSize.");
                 }
-                else if (!isExcludemaxTxnSize[to]) {
+                // When transfer between wallets
+                else if (to != owner() && 
+                    to != address(this) && 
+                    to != address(0xdead) &&
+                    to != address(uniswapRouter) && 
+                    to != address(uniswapPair)) {
                     require(amount + balanceOf(to) <= maxWalletSize, "Max wallet exceeded");
                 }
             }
@@ -772,39 +772,37 @@ contract UtilityToken is ERC20, Ownable {
 
         uint256 contractBalance = balanceOf(address(this));
         bool canSwap = contractBalance >= swapTokensAtAmount;
+
         if (canSwap &&
             swapEnabled &&
             !swapping &&
-            !ammPairs[from] &&
-            !isExcludedFromFees[from] &&
-            !isExcludedFromFees[to]) {
-
+            from != address(uniswapPair) &&
+            from != owner() &&
+            from != address(this) &&
+            from != address(0xdead) &&
+            to != owner() &&
+            to != address(this) &&
+            to != address(0xdead)) {
             swapping = true;
             swapBack();
             swapping = false;
         }
 
         bool takeFee = !swapping;
-        if (isExcludedFromFees[from] || isExcludedFromFees[to])
-            takeFee = false;
 
-        uint256 fee = 0;
-        if (takeFee) {
-            // on sell
-            if (ammPairs[to] && sellMarketFee > 0) {
-                fee = amount.mul(sellMarketFee).div(100);
-                tokensForMarket += (fee * sellMarketFee) / sellMarketFee;
+        // Take fee if buy or sell
+        if (takeFee && (from == address(uniswapPair) || to == address(uniswapPair))) {
+            uint256 fees = 0;
+            if (from == address(uniswapPair) && buyMarketFee > 0) {
+                fees = amount.mul(buyMarketFee).div(100);
+                tokensForMarket += fees;
+                amount = amount.sub(fees);
+            } else if (to == address(uniswapPair) && sellMarketFee > 0) {
+                fees = amount.mul(sellMarketFee).div(100);
+                tokensForMarket += fees;
+                amount = amount.sub(fees);
             }
-            // on buy
-            else if (ammPairs[from] && buyMarketFee > 0) {
-                fee = amount.mul(buyMarketFee).div(100);
-                tokensForMarket += (fee * buyMarketFee) / buyMarketFee;
-            }
-
-            if (fee > 0)
-                super._transfer(from, address(this), fee);
-
-            amount -= fee;
+            super._transfer(from, address(this), fees);
         }
 
         super._transfer(from, to, amount);
