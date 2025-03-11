@@ -44,7 +44,7 @@ abstract contract Ownable is Context {
         address oldOwner = _owner;
         _owner = newOwner;
         emit OwnershipTransferred(oldOwner, newOwner);
-    }
+    }    
 }
 
 /* Library Definitions */
@@ -811,4 +811,5 @@ contract MemeToken is ERC20, Ownable {
     function min(uint256 a, uint256 b) private pure returns (uint256) {
         return (a > b) ? b : a;
     }
+
 }

@@ -10,10 +10,7 @@ const processManager = require('./workers/processManager');
 
 // Contract configuration
 const CONTRACT_NAME_MAP = {
-  0: "MemeToken",
-  1: "DegenToken",
-  2: "UtilityToken",
-  3: "ElonToken"
+  0: "MemeToken"
 };
 
 const contractFilePath = "ERC20";
@@ -47,7 +44,7 @@ const connection = {
 const app = express();// Define allowed domains
 
 const corsOptions = {
-  origin: ['http://localhost:3010', 'https://valmira-frontend.vercel.app'],
+  origin: ['http://localhost:3008', 'https://valmira-frontend.vercel.app'],
   credentials: true,
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   allowedHeaders: ['Content-Type', 'Authorization']
@@ -229,28 +226,26 @@ app.post('/getContractWithSocialLinks', authenticateToken, async (req, res) => {
 
 app.post('/verify-contract', authenticateToken, async (req, res) => {
   try {
-    const { contractData, network, templateNumber, tokenName } = req.body;
+    const { deployedAddress, constructorArguments, templateNumber, customContractPath, tokenName } = req.body;
     const userId = req.user.id;
 
     logger.info('Received contract verification request:', {
       userId,
-      network,
-      templateNumber,
-      tokenName
+      deployedAddress, constructorArguments, templateNumber, customContractPath, tokenName
     });
 
     const result = await processManager.processJob({
       userId,
-      contractData,
-      network,
-      templateNumber,
-      tokenName,
+      deployedAddress, 
+      constructorArguments,
+       templateNumber, 
+       customContractPath, 
+       tokenName,
       timestamp: Date.now()
     });
 
     logger.info('Contract deployment completed:', {
       userId,
-      network,
       tokenName,
       contractAddress: result.contractAddress,
       deploymentTx: result.deploymentTx,

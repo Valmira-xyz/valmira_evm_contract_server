@@ -4,6 +4,13 @@ const { exec } = require('child_process');
 const { promisify } = require('util');
 const execAsync = promisify(exec);
 const winston = require('winston');
+const isEmpty = require('is-empty');
+
+const CONTRACT_NAME_MAP = {
+  0: "MemeToken"
+};
+
+const contractFilePath = "ERC20"; // The path of your contract file relative to the 'contracts' directory
 
 // Initialize logger
 const logger = winston.createLogger({
@@ -27,41 +34,57 @@ if (process.env.NODE_ENV !== 'production') {
 // Network configuration
 const NETWORK_CONFIG = {
   'bsc': {
-    rpcUrl: process.env.BSC_RPC_URL,
+    rpcUrl: "https://bsc-dataseed.binance.org/",
     apiKey: process.env.BSCSCAN_API_KEY,
     name: 'bsc'
   },
   'bsc-testnet': {
-    rpcUrl: process.env.BSC_TESTNET_RPC_URL,
+    rpcUrl: "https://data-seed-prebsc-1-s1.binance.org:8545",
     apiKey: process.env.BSCSCAN_API_KEY,
     name: 'bsc-testnet'
-  },
-  'ethereum': {
-    rpcUrl: process.env.ETH_RPC_URL,
-    apiKey: process.env.ETHERSCAN_API_KEY,
-    name: 'mainnet'
-  },
-  'ethereum-testnet': {
-    rpcUrl: process.env.ETH_TESTNET_RPC_URL,
-    apiKey: process.env.ETHERSCAN_API_KEY,
-    name: 'sepolia'
   }
 };
 
-async function verifyContract(deployedAddress, args, templateNumber, customContractPath, tokenName, network) {
-  const networkConfig = NETWORK_CONFIG[network];
-  if (!networkConfig) {
-    throw new Error(`Unsupported network: ${network}`);
-  }
+function replaceSpacesWithUnderscores(str) {
+  return str.split(' ').join('_');
+}
 
-  let command = `npx hardhat verify --network ${networkConfig.name} ${deployedAddress}`;
+function generateHardhatVerifyCommand(args, deployedContractAddress, templateNumber, customContractPath, tokenName) {
+  // Define the network for which the contract is deployed
+  const network = process.env.CHAIN_NAME;
+
+  // Start building the command
+  let command = `npx hardhat verify --network ${network} ${deployedContractAddress}`;
+
+  // Loop through the args array and append each argument to the command string
   args.forEach(arg => {
+    // If the argument is a string and contains spaces, enclose it in quotes
     if (typeof arg === 'string' && arg.includes(' ')) {
       command += ` "${arg}"`;
     } else {
       command += ` ${arg}`;
     }
   });
+  
+  // Append the contract file path and name
+  if( isEmpty(customContractPath) != true )
+    {
+      const tokenCalssName = replaceSpacesWithUnderscores(tokenName);
+      command += ` --contract ${customContractPath}:${tokenCalssName}`;
+    } else if ( isEmpty(contractFilePath) != true ) {
+    command += ` --contract contracts/${contractFilePath}/${CONTRACT_NAME_MAP[templateNumber]}.sol:${CONTRACT_NAME_MAP[templateNumber]}`;
+  }
+
+  return command;
+}
+
+async function verifyContract(deployedAddress, args, templateNumber, customContractPath, tokenName, network) {
+  const networkConfig = NETWORK_CONFIG[network ||process.env.CHAIN_NAME];
+  if (!networkConfig) {
+    throw new Error(`Unsupported network: ${network ||process.env.CHAIN_NAME}`);
+  }
+
+  const command = generateHardhatVerifyCommand(args, deployedAddress, templateNumber, customContractPath, tokenName);  
 
   try {
     const { stdout, stderr } = await execAsync(command);
@@ -77,52 +100,36 @@ async function verifyContract(deployedAddress, args, templateNumber, customContr
   }
 }
 
-async function deployAndVerifyContract(jobId, data) {
+async function doVerifyContract(jobId, data) {
   try {
-    const { contractData, network, templateNumber, tokenName } = data;
-    
+    const { deployedAddress, constructorArguments, templateNumber, customContractPath, tokenName } = data;
+    const network = process.env.CHAIN_NAME || "bsc";
+
     logger.info(`Processing job ${jobId}:`, {
+      deployedAddress, constructorArguments, templateNumber, customContractPath, tokenName ,
       network,
-      tokenName,
-      templateNumber
     });
 
     // Get network configuration
     const networkConfig = NETWORK_CONFIG[network];
     if (!networkConfig) {
       throw new Error(`Unsupported network: ${network}`);
-    }
-
-    // Initialize provider
-    const provider = new ethers.JsonRpcProvider(networkConfig.rpcUrl);
-    
-    // Deploy contract
-    const factory = new ethers.ContractFactory(
-      contractData.abi,
-      contractData.bytecode,
-      provider
-    );
-
-    const contract = await factory.deploy(...contractData.constructorArgs);
-    await contract.waitForDeployment();
-    
-    const contractAddress = await contract.getAddress();
-    const deploymentTx = contract.deploymentTransaction().hash;
+    }  
 
     // Verify contract if network supports it
     let verificationResult = null;
     if (networkConfig.apiKey) {
       try {
-        logger.info(`Waiting for contract propagation before verification: ${contractAddress}`);
+        logger.info(`Waiting for contract propagation before verification: ${deployedAddress}`);
         await new Promise(resolve => setTimeout(resolve, 30000));
 
         const isVerified = await verifyContract(
-          contractAddress,
-          contractData.constructorArgs,
+          deployedAddress,
+          constructorArguments,
           templateNumber,
-          null,
+          customContractPath,
           tokenName,
-          network
+          network || process.env.CHAIN_NAME
         );
 
         if (!isVerified) {
@@ -130,13 +137,14 @@ async function deployAndVerifyContract(jobId, data) {
           for (const delay of delays) {
             logger.info(`Retrying verification after ${delay}ms delay`);
             await new Promise(resolve => setTimeout(resolve, delay));
+
             const retryVerified = await verifyContract(
-              contractAddress,
-              contractData.constructorArgs,
+              deployedAddress,
+              constructorArguments,
               templateNumber,
-              null,
+              customContractPath,
               tokenName,
-              network
+              network || process.env.CHAIN_NAME
             );
             if (retryVerified) {
               verificationResult = 'success';
@@ -148,7 +156,7 @@ async function deployAndVerifyContract(jobId, data) {
         }
       } catch (error) {
         verificationResult = `failed: ${error.message}`;
-        logger.error(`Verification failed for ${contractAddress}:`, {
+        logger.error(`Verification failed for ${deployedAddress}:`, {
           error: error.message,
           stack: error.stack
         });
@@ -157,8 +165,7 @@ async function deployAndVerifyContract(jobId, data) {
 
     const result = {
       success: true,
-      contractAddress,
-      deploymentTx,
+      deployedAddress,
       network,
       verificationResult
     };
@@ -179,7 +186,7 @@ async function deployAndVerifyContract(jobId, data) {
 process.on('message', async (message) => {
   if (message.type === 'job') {
     try {
-      const result = await deployAndVerifyContract(message.jobId, message.data);
+      const result = await doVerifyContract(message.jobId, message.data);
       process.send({
         type: 'job_complete',
         jobId: message.jobId,

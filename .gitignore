@@ -112,4 +112,4 @@ out
 # Local Netlify folder
 .netlify
 
-combined.log
+*.log

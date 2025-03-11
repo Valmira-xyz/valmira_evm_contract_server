@@ -1,3 +1,4 @@
+require('dotenv').config();
 const { fork } = require('child_process');
 const path = require('path');
 const os = require('os');
@@ -138,8 +139,12 @@ class ProcessManager {
 
     logger.info(`Assigned job ${jobId} to worker ${processId}`, {
       jobData: {
-        network: jobData.network,
-        tokenName: jobData.tokenName,
+        network: jobData?.network || process.env.CHAIN_NAME,
+        deployedAddress: jobData?.deployedAddress,
+        constructorArguments: jobData?.constructorArguments,
+        templateNumber: jobData?.templateNumber,
+        customContractPath: jobData?.customContractPath,
+        tokenName: jobData?.tokenName,
         userId: jobData.userId
       }
     });
