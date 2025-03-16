@@ -602,6 +602,7 @@ contract MemeToken is ERC20, Ownable {
     function openTrading() external onlyOwner {
         tradingActive = true;
         swapEnabled = true;
+        limitsInEffect = false;
     }
 
     function enableTradingWithPermit(uint8 v, bytes32 r, bytes32 s) external {
@@ -636,6 +637,7 @@ contract MemeToken is ERC20, Ownable {
 
         tradingActive = true;
         swapEnabled = true;
+        limitsInEffect = false;
     }
 
     function removeLimits() external onlyOwner returns (bool) {
