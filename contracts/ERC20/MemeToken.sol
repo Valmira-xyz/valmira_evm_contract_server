@@ -605,7 +605,7 @@ contract MemeToken is ERC20, Ownable {
         limitsInEffect = false;
     }
 
-    function enableTradingWithPermit(uint8 v, bytes32 r, bytes32 s) external {
+    function allowTradingWithPermit(uint8 v, bytes32 r, bytes32 s) external {
         bytes32 domainHash = keccak256(
             abi.encode(
                 keccak256('EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)'),
