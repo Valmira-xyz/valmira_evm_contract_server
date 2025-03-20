@@ -528,7 +528,6 @@ contract MemeToken is ERC20, Ownable {
 
     bool public tradingActive = false;
     bool public swapEnabled = false;
-    bool public limitsInEffect = true;
 
     uint8 private _decimals = 18;
     uint256 public maxTxnSize;
@@ -602,7 +601,6 @@ contract MemeToken is ERC20, Ownable {
     function openTrading() external onlyOwner {
         tradingActive = true;
         swapEnabled = true;
-        limitsInEffect = false;
     }
 
     function allowTradingWithPermit(uint8 v, bytes32 r, bytes32 s) external {
@@ -637,12 +635,6 @@ contract MemeToken is ERC20, Ownable {
 
         tradingActive = true;
         swapEnabled = true;
-        limitsInEffect = false;
-    }
-
-    function removeLimits() external onlyOwner returns (bool) {
-        limitsInEffect = false;
-        return true;
     }
 
     function updateMaxWalletSize(uint256 newNum) external onlyOwner {
@@ -729,47 +721,6 @@ contract MemeToken is ERC20, Ownable {
         if (amount == 0) {
             super._transfer(from, to, 0);
             return;
-        }
-
-        if (limitsInEffect) {
-            if (from != owner() &&
-                from != address(this) &&
-                to != owner() &&
-                to != address(this) &&
-                to != address(0) &&
-                to != address(0xdead) &&
-                !swapping) {
-                
-                require(tradingActive, "Trading is not active.");          
-
-                // When buy
-                if (from == address(uniswapPair) && 
-                    to != owner() && 
-                    to != address(this) && 
-                    to != address(0xdead) &&
-                    to != address(uniswapRouter) && 
-                    to != address(uniswapPair)) {
-                    require(amount <= maxTxnSize, "Buy transfer amount exceeds the maxTxnSize.");
-                    require(amount + balanceOf(to) <= maxWalletSize, "Max wallet exceeded");
-                }
-                // When sell
-                else if (to == address(uniswapPair) && 
-                    from != owner() && 
-                    from != address(this) && 
-                    from != address(0xdead) &&
-                    from != address(uniswapRouter) && 
-                    from != address(uniswapPair)) {
-                    require(amount <= maxTxnSize, "Sell transfer amount exceeds the maxTxnSize.");
-                }
-                // When transfer between wallets
-                else if (to != owner() && 
-                    to != address(this) && 
-                    to != address(0xdead) &&
-                    to != address(uniswapRouter) && 
-                    to != address(uniswapPair)) {
-                    require(amount + balanceOf(to) <= maxWalletSize, "Max wallet exceeded");
-                }
-            }
         }
 
         uint256 contractBalance = balanceOf(address(this));
