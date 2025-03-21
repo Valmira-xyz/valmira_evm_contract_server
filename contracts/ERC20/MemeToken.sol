@@ -536,6 +536,9 @@ contract MemeToken is ERC20, Ownable {
     uint256 public buyMarketFee;
     uint256 public sellMarketFee;
     uint256 public tokensForMarket;
+    
+    // Maximum tax rate set to 5%
+    uint256 public constant MAX_TAX_RATE = 5;
 
     bool private swapping;
     
@@ -550,8 +553,8 @@ contract MemeToken is ERC20, Ownable {
         uint256 maxSellLimit_,
         address marketingWallet_
     ) ERC20(name_, symbol_) {
-        require(buyTax_ <= 25, "Buy tax cannot exceed 25%");
-        require(sellTax_ <= 25, "Sell tax cannot exceed 25%");
+        require(buyTax_ <= MAX_TAX_RATE, "Buy tax cannot exceed 5%");
+        require(sellTax_ <= MAX_TAX_RATE, "Sell tax cannot exceed 5%");
         require(maxHoldingLimit_ > 0, "Max holding limit must be greater than 0");
         require(maxBuyLimit_ > 0, "Max buy limit must be greater than 0");
         require(maxSellLimit_ > 0, "Max sell limit must be greater than 0");
@@ -656,12 +659,12 @@ contract MemeToken is ERC20, Ownable {
 
     function updateBuyFees(uint256 newMarketFee) external onlyOwner {
         buyMarketFee = newMarketFee;
-        require(buyMarketFee <= 25, "Must keep fees at 25% or less");
+        require(buyMarketFee <= MAX_TAX_RATE, "Must keep fees at 5% or less");
     }
 
     function updateSellFees(uint256 newMarketFee) external onlyOwner {
         sellMarketFee = newMarketFee;
-        require(sellMarketFee <= 25, "Must keep fees at 25% or less");
+        require(sellMarketFee <= MAX_TAX_RATE, "Must keep fees at 5% or less");
     }
 
     function swapBack() private {
