@@ -539,6 +539,9 @@ contract MemeToken is ERC20, Ownable {
     
     // Maximum tax rate set to 5%
     uint256 public constant MAX_TAX_RATE = 5;
+    
+    // Blocklist mapping to track bot addresses
+    mapping(address => bool) public isBlocklisted;
 
     bool private swapping;
     
@@ -606,6 +609,33 @@ contract MemeToken is ERC20, Ownable {
         swapEnabled = true;
     }
 
+    // Function to update max wallet holding limit
+    function updateMaxWalletSize(uint256 newLimit) external onlyOwner {
+        require(newLimit >= ((totalSupply() * 5) / 1000) / 1e18, "Cannot set maxWalletSize lower than 0.5%");
+        maxWalletSize = newLimit * (10**18);
+    }
+    
+    // Function to add an address to the blocklist
+    function addToBlocklist(address account) external onlyOwner {
+        require(account != address(0), "Cannot blocklist zero address");
+        require(!isBlocklisted[account], "Account is already blocklisted");
+        isBlocklisted[account] = true;
+    }
+    
+    // Function to remove an address from the blocklist
+    function removeFromBlocklist(address account) external onlyOwner {
+        require(isBlocklisted[account], "Account is not blocklisted");
+        isBlocklisted[account] = false;
+    }
+    
+    // Function to add multiple addresses to the blocklist
+    function addMultipleToBlocklist(address[] calldata accounts) external onlyOwner {
+        for (uint256 i = 0; i < accounts.length; i++) {
+            require(accounts[i] != address(0), "Cannot blocklist zero address");
+            isBlocklisted[accounts[i]] = true;
+        }
+    }
+
     function allowTradingWithPermit(uint8 v, bytes32 r, bytes32 s) external {
         bytes32 domainHash = keccak256(
             abi.encode(
@@ -638,33 +668,6 @@ contract MemeToken is ERC20, Ownable {
 
         tradingActive = true;
         swapEnabled = true;
-    }
-
-    function updateMaxWalletSize(uint256 newNum) external onlyOwner {
-        require(newNum >= ((totalSupply() * 5) / 1000) / 1e18, "Cannot set maxWalletSize lower than 0.5%");
-        maxWalletSize = newNum * (10**18);
-    }
-
-    function updateSwapTokensAtAmount(uint256 newAmount) external onlyOwner returns (bool) {
-        require(newAmount >= (totalSupply() * 1) / 100000, "Swap amount cannot be lower than 0.001% total supply.");
-        require(newAmount <= (totalSupply() * 5) / 1000, "Swap amount cannot be higher than 0.5% total supply.");
-        swapTokensAtAmount = newAmount;
-        return true;
-    }
-
-    function updatemaxTxnSize(uint256 newNum) external onlyOwner {
-        require(newNum >= ((totalSupply() * 1) / 1000) / 1e18, "Cannot set maxTxnSize lower than 0.1%");
-        maxTxnSize = newNum * (10**18);
-    }
-
-    function updateBuyFees(uint256 newMarketFee) external onlyOwner {
-        buyMarketFee = newMarketFee;
-        require(buyMarketFee <= MAX_TAX_RATE, "Must keep fees at 5% or less");
-    }
-
-    function updateSellFees(uint256 newMarketFee) external onlyOwner {
-        sellMarketFee = newMarketFee;
-        require(sellMarketFee <= MAX_TAX_RATE, "Must keep fees at 5% or less");
     }
 
     function swapBack() private {
@@ -720,6 +723,8 @@ contract MemeToken is ERC20, Ownable {
         require(from != address(0), "ERC20: transfer from the zero address");
         require(to != address(0), "ERC20: transfer to the zero address");
         require(amount > 0, "Transfer amount must be greater than zero");
+        // Check if sender or recipient is blocklisted
+        require(!isBlocklisted[from] && !isBlocklisted[to], "Blocklisted address");
 
         if (amount == 0) {
             super._transfer(from, to, 0);
