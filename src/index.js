@@ -101,29 +101,29 @@ const authenticateToken = async (req, res, next) => {
 // Routes
 app.post('/getContractWithSocialLinks', authenticateToken, async (req, res) => {
   try {
-    const { website, twitter, telegram, discord, templateNumber, tokenName } = req.body;
+    const { websiteLink, twitterLink, telegramLink, discordLink, templateNumber, tokenName } = req.body;
     logger.info('Processing new contract creation request:', {
       tokenName,
       templateNumber,
       socialLinks: {
-        website: website || 'not provided',
-        telegram: telegram || 'not provided',
-        twitter: twitter || 'not provided',
-        discord: discord || 'not provided'
+        website: websiteLink || 'not provided',
+        telegram: telegramLink || 'not provided',
+        twitter: twitterLink || 'not provided',
+        discord: discordLink || 'not provided'
       }
     });
 
     let need2ReplaceFirstLine = true;
-    if (isEmpty(website) && isEmpty(telegram) && isEmpty(twitter) && isEmpty(discord)) {
+    if (isEmpty(websiteLink) && isEmpty(telegramLink) && isEmpty(twitterLink) && isEmpty(discordLink)) {
       need2ReplaceFirstLine = false;
       logger.info('No social links provided, skipping header modification');
     }
 
     let comments = "//\tSPDX-License-Identifier: MIT\n\n\n";
-    if (!isEmpty(website)) comments += `//\tWebsite: ${website}\n`;
-    if (!isEmpty(telegram)) comments += `//\tTelegram: ${telegram}\n`;
-    if (!isEmpty(twitter)) comments += `//\tTwitter: ${twitter}\n`;
-    if (!isEmpty(discord)) comments += `//\tDiscord: ${discord}\n`;
+    if (!isEmpty(websiteLink)) comments += `//\tWebsite: ${websiteLink}\n`;
+    if (!isEmpty(telegramLink)) comments += `//\tTelegram: ${telegramLink}\n`;
+    if (!isEmpty(twitterLink)) comments += `//\tTwitter: ${twitterLink}\n`;
+    if (!isEmpty(discordLink)) comments += `//\tDiscord: ${discordLink}\n`;
 
     const tokenFileName = replaceSpacesWithUnderscores(tokenName);
 
