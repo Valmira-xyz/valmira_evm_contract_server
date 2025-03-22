@@ -44,7 +44,7 @@ const connection = {
 const app = express();// Define allowed domains
 
 const corsOptions = {
-  origin: ['http://localhost:3008', 'https://valmira-frontend.vercel.app'],
+  origin: ['http://localhost:3008', 'https://valmira-frontend.vercel.app', 'https://valmira-dev.vercel.app'],
   credentials: true,
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   allowedHeaders: ['Content-Type', 'Authorization']
