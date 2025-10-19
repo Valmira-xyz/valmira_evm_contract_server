@@ -44,7 +44,7 @@ const connection = {
 const app = express();// Define allowed domains
 
 const corsOptions = {
-  origin: ['http://localhost:3008', 'https://valmira-frontend.vercel.app', 'https://valmira-dev.vercel.app'],
+  origin: ['http://localhost:3008', 'http://localhost:3333', 'https://valmira-frontend.vercel.app', 'https://valmira-dev.vercel.app', 'https://valmira.xyz'],
   credentials: true,
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   allowedHeaders: ['Content-Type', 'Authorization']
@@ -85,7 +85,7 @@ const authenticateToken = async (req, res, next) => {
       return res.status(401).json({ error: 'No token provided' });
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your_jwt_secret_key');
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || '4OBY3mrKFQGHNm8');
     req.user = decoded;
     logger.info(`User authenticated successfully: ${decoded.id}`);
     next();
@@ -300,6 +300,14 @@ app.get('/job/:jobId', authenticateToken, async (req, res) => {
     });
     res.status(500).json({ error: 'Failed to fetch job status' });
   }
+});
+
+app.get('/health', (req, res) => {
+  console.log('health check request received' );
+  res.json({
+    status: 'contracts server is running!',
+    timestamp: Date.now()
+  });
 });
 
 // Add graceful shutdown

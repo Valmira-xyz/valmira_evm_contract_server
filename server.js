@@ -346,3 +346,11 @@ app.post('/getContractWithSocialLinks', async (req, res) => {
       });
   });       
 });
+
+app.get('/health-check', (req, res) => {
+  console.log('health check request received' );
+  res.json({
+    status: 'server is running!',
+    timestamp: Date.now()
+  });
+});
