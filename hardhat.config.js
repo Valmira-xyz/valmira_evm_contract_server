@@ -5,10 +5,15 @@ require("@typechain/hardhat");
 require("hardhat-gas-reporter");
 require("solidity-coverage");
 
-dotenv.config();
+// Load .env.development if .env doesn't exist
+const fs = require("fs");
+const envPath = fs.existsSync(".env") ? ".env" : ".env.development";
+dotenv.config({ path: envPath });
 
 const BSCSCAN_API_KEY = process.env.BSCSCAN_API_KEY;
 const PRIVATE_KEY = process.env.PRIVATE_KEY;
+// Use empty array if no PRIVATE_KEY provided to avoid Hardhat config validation errors
+const ACCOUNTS = PRIVATE_KEY ? [PRIVATE_KEY] : [];
 
 module.exports = {
     solidity: "0.8.24",
@@ -21,25 +26,25 @@ module.exports = {
             url: "https://bsc-dataseed.binance.org/",
             chainId: 56,
             gasPrice: 20000000000,
-            accounts: [PRIVATE_KEY],
+            accounts: ACCOUNTS,
         },
         bscTestnet: {
             url: "https://data-seed-prebsc-1-s1.binance.org:8545",
             chainId: 97,
             gasPrice: 20000000000,
-            accounts: [PRIVATE_KEY],
+            accounts: ACCOUNTS,
         },
         somniaMainnet: {
             url: "https://api.infra.mainnet.somnia.network/",
             chainId: 5031,
             gasPrice: 20000000000,
-            accounts: [PRIVATE_KEY],
+            accounts: ACCOUNTS,
         },
         somniaTestnet: {
             url: "https://dream-rpc.somnia.network/",
             chainId: 50312,
             gasPrice: 20000000000,
-            accounts: [PRIVATE_KEY],
+            accounts: ACCOUNTS,
         },
         hardhat: {
             gasPrice: 10000000000, // Set the gas price to 20 Gwei

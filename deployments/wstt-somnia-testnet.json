@@ -1,0 +1,15 @@
+{
+  "network": "somniaTestnet",
+  "chainId": 50312,
+  "contractName": "WSTT",
+  "contractAddress": "0x40722b4Eb73194eDB6cf518B94b022f1877b0811",
+  "deployerAddress": "0xc5993575A2FF8D10c0A0e606A4827468331F570F",
+  "transactionHash": "0xf02bf50d49b8d9dad712478144f5f4feee9ed6ab8eca2c113053d5f88e75d0fd",
+  "blockNumber": 213040838,
+  "timestamp": "2025-10-27T12:05:12.093Z",
+  "contractDetails": {
+    "name": "Wrapped STT",
+    "symbol": "WSTT",
+    "decimals": 18
+  }
+}

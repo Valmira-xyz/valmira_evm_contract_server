@@ -41,10 +41,17 @@ const connection = {
 };
 
 // Initialize Express app
-const app = express();// Define allowed domains
+const app = express();
+
+// Parse allowed origins from environment variable
+const allowedOrigins = process.env.ALLOWED_ORIGINS
+  ? process.env.ALLOWED_ORIGINS.split(',').map(origin => origin.trim())
+  : ['http://localhost:3008', 'http://localhost:3333', 'http://localhost:63325', 'https://valmira-frontend.vercel.app', 'https://valmira-dev.vercel.app', 'https://valmira.xyz'];
+
+logger.info('Configured CORS origins:', allowedOrigins);
 
 const corsOptions = {
-  origin: ['http://localhost:3008', 'http://localhost:3333', 'https://valmira-frontend.vercel.app', 'https://valmira-dev.vercel.app', 'https://valmira.xyz'],
+  origin: allowedOrigins,
   credentials: true,
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   allowedHeaders: ['Content-Type', 'Authorization']
@@ -226,12 +233,12 @@ app.post('/getContractWithSocialLinks', authenticateToken, async (req, res) => {
 
 app.post('/verify-contract', authenticateToken, async (req, res) => {
   try {
-    const { deployedAddress, constructorArguments, templateNumber, customContractPath, tokenName } = req.body;
+    const { deployedAddress, constructorArguments, templateNumber, customContractPath, tokenName, chainName } = req.body;
     const userId = req.user.id;
 
     logger.info('Received contract verification request:', {
       userId,
-      deployedAddress, constructorArguments, templateNumber, customContractPath, tokenName
+      deployedAddress, constructorArguments, templateNumber, customContractPath, tokenName, chainName
     });
 
     const result = await processManager.processJob({
@@ -241,6 +248,7 @@ app.post('/verify-contract', authenticateToken, async (req, res) => {
        templateNumber, 
        customContractPath, 
        tokenName,
+       chainName,
       timestamp: Date.now()
     });
 
@@ -323,7 +331,7 @@ process.on('SIGINT', async () => {
   process.exit(0);
 });
 
-const PORT = process.env.PORT || 32156;
+const PORT = process.env.PORT || 32256;
 app.listen(PORT, () => {
   logger.info('Contract server started:', {
     port: PORT,

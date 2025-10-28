@@ -1,0 +1,12 @@
+{
+  "network": "somniaTestnet",
+  "chainId": 50312,
+  "contractName": "SomniaRouter",
+  "contractAddress": "0xb1618E58Fa411b94da5247Bc0d808DB43f3629BE",
+  "factoryAddress": "0x96eE1a0cb578AB2F8d7769c155D4A694d5845477",
+  "wsttAddress": "0x40722b4Eb73194eDB6cf518B94b022f1877b0811",
+  "deployerAddress": "0xc5993575A2FF8D10c0A0e606A4827468331F570F",
+  "transactionHash": "0x39413ae79b30b341efabbdfca6be494085c2b84b0693894fd35d76614dabbde1",
+  "blockNumber": 213051907,
+  "timestamp": "2025-10-27T12:23:44.555Z"
+}

@@ -1,0 +1,12 @@
+{
+  "network": "Somnia Testnet",
+  "chainId": 50312,
+  "lastUpdated": "2025-10-27T12:23:44.556Z",
+  "contracts": {
+    "factory": "0x96eE1a0cb578AB2F8d7769c155D4A694d5845477",
+    "router": "0xb1618E58Fa411b94da5247Bc0d808DB43f3629BE",
+    "wstt": "0x40722b4Eb73194eDB6cf518B94b022f1877b0811"
+  },
+  "explorer": "https://shannon-explorer.somnia.network/",
+  "rpcUrl": "https://dream-rpc.somnia.network/"
+}

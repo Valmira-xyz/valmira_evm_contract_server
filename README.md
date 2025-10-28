@@ -152,10 +152,32 @@ valmira-contracts-server/
 ## Environment Variables
 
 See `.env.example` for all required environment variables. Key variables include:
+
+### Core Settings
 - `PORT`: API server port (default: 32156)
-- `REDIS_*`: Redis connection settings
-- `JWT_*`: JWT authentication settings
+- `NODE_ENV`: Environment (development/production/test)
+
+### CORS Configuration
+- `ALLOWED_ORIGINS`: Comma-separated list of allowed frontend URLs for CORS
+  - Example: `ALLOWED_ORIGINS=http://localhost:3000,https://app.example.com,https://www.example.com`
+  - Default origins: `http://localhost:3008, http://localhost:3333, http://localhost:63325, https://valmira-frontend.vercel.app, https://valmira-dev.vercel.app, https://valmira.xyz`
+
+### Redis Settings
+- `REDIS_HOST`: Redis host address (default: localhost)
+- `REDIS_PORT`: Redis port (default: 6379)
+- `REDIS_PASSWORD`: Redis password (optional)
+
+### Authentication
+- `JWT_SECRET`: Secret key for JWT token validation
+- `JWT_EXPIRES_IN`: JWT token expiration time
+
+### Blockchain Networks
 - Network RPC URLs and API keys for each supported blockchain
+- `BSC_RPC_URL`: Binance Smart Chain RPC endpoint
+- `ETH_RPC_URL`: Ethereum RPC endpoint
+- `SOMNIA_TESTNET_RPC_URL`: Somnia Testnet RPC endpoint
+- `BSCSCAN_API_KEY`: BSCScan API key for contract verification
+- `ETHERSCAN_API_KEY`: Etherscan API key for contract verification
 
 ## Contributing
 

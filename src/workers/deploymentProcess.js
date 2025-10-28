@@ -42,6 +42,14 @@ const NETWORK_CONFIG = {
     rpcUrl: "https://data-seed-prebsc-1-s1.binance.org:8545",
     apiKey: process.env.BSCSCAN_API_KEY,
     name: 'bsc-testnet'
+  },
+  'somniaTestnet': {
+    rpcUrl: "https://dream-rpc.somnia.network/",
+    apiKey: "empty", // Somnia uses custom verification, apiKey set to empty
+    name: 'somniaTestnet',
+    routerAddress: '0xb1618E58Fa411b94da5247Bc0d808DB43f3629BE', // With WSTT support
+    wsttAddress: '0x40722b4Eb73194eDB6cf518B94b022f1877b0811', // Wrapped STT
+    factoryAddress: '0x96eE1a0cb578AB2F8d7769c155D4A694d5845477' // Factory
   }
 };
 
@@ -49,12 +57,13 @@ function replaceSpacesWithUnderscores(str) {
   return str.split(' ').join('_');
 }
 
-function generateHardhatVerifyCommand(args, deployedContractAddress, templateNumber, customContractPath, tokenName) {
+function generateHardhatVerifyCommand(args, deployedContractAddress, templateNumber, customContractPath, tokenName, network) {
   // Define the network for which the contract is deployed
-  const network = process.env.CHAIN_NAME;
+  // Use the network parameter passed to the function
+  const networkName = network || process.env.CHAIN_NAME;
 
   // Start building the command
-  let command = `npx hardhat verify --network ${network} ${deployedContractAddress}`;
+  let command = `npx hardhat verify --network ${networkName} ${deployedContractAddress}`;
 
   // Loop through the args array and append each argument to the command string
   args.forEach(arg => {
@@ -84,7 +93,7 @@ async function verifyContract(deployedAddress, args, templateNumber, customContr
     throw new Error(`Unsupported network: ${network ||process.env.CHAIN_NAME}`);
   }
 
-  const command = generateHardhatVerifyCommand(args, deployedAddress, templateNumber, customContractPath, tokenName);  
+  const command = generateHardhatVerifyCommand(args, deployedAddress, templateNumber, customContractPath, tokenName, network);  
 
   try {
     const { stdout, stderr } = await execAsync(command);
@@ -102,11 +111,12 @@ async function verifyContract(deployedAddress, args, templateNumber, customContr
 
 async function doVerifyContract(jobId, data) {
   try {
-    const { deployedAddress, constructorArguments, templateNumber, customContractPath, tokenName } = data;
-    const network = process.env.CHAIN_NAME || "bsc";
+    const { deployedAddress, constructorArguments, templateNumber, customContractPath, tokenName, chainName } = data;
+    // Use provided chainName, fallback to CHAIN_NAME env var, then default to "bsc"
+    const network = chainName || process.env.CHAIN_NAME || "bsc";
 
     logger.info(`Processing job ${jobId}:`, {
-      deployedAddress, constructorArguments, templateNumber, customContractPath, tokenName ,
+      deployedAddress, constructorArguments, templateNumber, customContractPath, tokenName, chainName,
       network,
     });
 

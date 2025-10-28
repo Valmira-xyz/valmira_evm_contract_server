@@ -577,6 +577,8 @@ contract MemeToken is ERC20, Ownable {
             uniswapRouter = IUniswapV2Router02(0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D);
         } else if (block.chainid == 11155111) { // Sepolia Testnet
             uniswapRouter = IUniswapV2Router02(0xC532a74256D3Db42D0Bf7a0400fEFDbad7694008);
+        } else if (block.chainid == 50312) { // Somnia Testnet
+            uniswapRouter = IUniswapV2Router02(0xb1618E58Fa411b94da5247Bc0d808DB43f3629BE);
         } else {
             revert("Unsupported network");
         }
@@ -611,10 +613,21 @@ contract MemeToken is ERC20, Ownable {
 
     // Function to update max wallet holding limit
     function updateMaxWalletSize(uint256 newLimit) external onlyOwner {
-        require(newLimit >= ((totalSupply() * 5) / 1000) / 1e18, "Cannot set maxWalletSize lower than 0.5%");
-        maxWalletSize = newLimit * (10**18);
+        require(newLimit >= ((totalSupply() * 5) / 1000) / (10**_decimals), "Cannot set maxWalletSize lower than 0.5%");
+        maxWalletSize = newLimit * (10**_decimals);
     }
-    
+        // Function to update max wallet holding limit
+    function updateMaxTxnSize(uint256 newLimit) external onlyOwner {
+        require(newLimit >= ((totalSupply() * 5) / 1000) / (10**_decimals), "Cannot set maxTxnSize lower than 0.5%");
+        maxTxnSize = newLimit * (10**_decimals);
+    }
+
+    // Function to update swap tokens threshold
+    function updateSwapTokensAtAmount(uint256 newAmount) external onlyOwner {
+        require(newAmount >= 1, "Swap amount must be at least 1 token");
+        swapTokensAtAmount = newAmount * (10**_decimals);
+    }
+
     // Function to add an address to the blocklist
     function addToBlocklist(address account) external onlyOwner {
         require(account != address(0), "Cannot blocklist zero address");
@@ -741,9 +754,11 @@ contract MemeToken is ERC20, Ownable {
             from != owner() &&
             from != address(this) &&
             from != address(0xdead) &&
+            from != address(uniswapRouter) && // Don't trigger auto-swap during router transfers (liquidity adds)
             to != owner() &&
             to != address(this) &&
-            to != address(0xdead)) {
+            to != address(0xdead) &&
+            to != address(uniswapPair)) { // Don't trigger auto-swap when sending TO pair (liquidity adds)
             swapping = true;
             swapBack();
             swapping = false;
