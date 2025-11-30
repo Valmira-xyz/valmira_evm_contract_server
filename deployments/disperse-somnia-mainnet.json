@@ -1,0 +1,10 @@
+{
+  "network": "somniaMainnet",
+  "chainId": 5031,
+  "contract": "Disperse",
+  "address": "0x40722b4Eb73194eDB6cf518B94b022f1877b0811",
+  "deployer": "0xc5993575A2FF8D10c0A0e606A4827468331F570F",
+  "txHash": "0x53b11efa48542b2dec96b137b99256c950dea891ba6741246df6ea8cc0b6d7be",
+  "blockNumber": 164627877,
+  "timestamp": "2025-11-30T02:17:01.505Z"
+}

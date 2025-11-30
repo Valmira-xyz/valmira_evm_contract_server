@@ -19,12 +19,39 @@ const CONTRACT_NAME_MAP = {
   3: "ElonToken"
 }
 
+// Network configuration mapping chain names to hardhat network names
+const NETWORK_CONFIG = {
+  'BSC_MAINNET': {
+    name: 'bsc'
+  },
+  'ETH_MAINNET': {
+    name: 'eth'
+  },
+  'SOMNIA_TESTNET': {
+    name: 'somniaTestnet'
+  },
+  'SOMNIA_MAINNET': {
+    name: 'somniaMainnet'
+  },
+};
+
 function generateHardhatVerifyCommand(args, deployedContractAddress, templateNumber, customContractPath, tokenName) {
   // Define the network for which the contract is deployed
-  const network = process.env.CHAIN_NAME;
+  const networkKey = process.env.CHAIN_NAME;
+  
+  // Get the network configuration and use the hardhat network name
+  const networkConfig = NETWORK_CONFIG[networkKey];
+  if (!networkConfig) {
+    // Fallback to using the network key directly if not in config
+    console.warn(`Network ${networkKey} not found in NETWORK_CONFIG, using directly`);
+    var networkName = networkKey;
+  } else {
+    // Use the hardhat network name from config (e.g., 'somniaTestnet' instead of 'SOMNIA_TESTNET')
+    var networkName = networkConfig.name;
+  }
 
   // Start building the command
-  let command = `npx hardhat verify --network ${network} ${deployedContractAddress}`;
+  let command = `npx hardhat verify --network ${networkName} ${deployedContractAddress}`;
 
   // Loop through the args array and append each argument to the command string
   args.forEach(arg => {

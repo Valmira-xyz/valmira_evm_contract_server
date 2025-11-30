@@ -1,0 +1,101 @@
+{
+  "network": "somniaTestnet",
+  "chainId": 50312,
+  "verificationDate": "2025-11-28T19:31:17.823Z",
+  "results": {
+    "AlgebraPoolDeployer": {
+      "status": "verified",
+      "address": "0x05aB8fC942aFa417b94690fe6d420A548988598e"
+    },
+    "AlgebraFactory": {
+      "status": "verified",
+      "address": "0xA9e79B95F2ea2fB089B8F0744CDDA2c22eB00211"
+    },
+    "AlgebraCommunityVault": {
+      "status": "verified",
+      "address": "0x6cF8E1041D9326950E01e8D6aba75E0D5c778cBE"
+    },
+    "AlgebraVaultFactoryStub": {
+      "status": "verified",
+      "address": "0x5651dE9EEc63B868Dd0bB7B60bF0FB2783063591"
+    },
+    "EntryPoint": {
+      "status": "requires_manual_verification",
+      "address": "0x40EaEA1782b751948FD66B919aEF0f8Cf541fC09",
+      "error": "Bytecode mismatch - deployed from npm package artifacts",
+      "reason": "Contract deployed using pre-compiled npm package artifacts, but Hardhat verify compiles locally with different settings"
+    },
+    "PluginFactory": {
+      "status": "failed",
+      "address": "0xD10fBca4c53d76Cb8111cb2322d72849BbFbDDd0",
+      "error": "The contract @cryptoalgebra/integral-base-plugin/contracts/BasePluginV2Factory.sol:BasePluginV2Factory is not present in your project."
+    },
+    "TickLens": {
+      "status": "verified",
+      "address": "0xf0741029Ae1a6121845d0FeE20306b9Fd7D04800"
+    },
+    "Quoter": {
+      "status": "requires_manual_verification",
+      "address": "0xf573BF29c4FE9c88B57Ec697E9dB048273046165",
+      "error": "Bytecode mismatch - deployed from npm package artifacts",
+      "reason": "Contract deployed using pre-compiled npm package artifacts, but Hardhat verify compiles locally with different settings"
+    },
+    "QuoterV2": {
+      "status": "requires_manual_verification",
+      "address": "0x6c583b83b952A6c73A3D0Af9027A26d520E6A871",
+      "error": "Bytecode mismatch - deployed from npm package artifacts",
+      "reason": "Contract deployed using pre-compiled npm package artifacts, but Hardhat verify compiles locally with different settings"
+    },
+    "SwapRouter": {
+      "status": "requires_manual_verification",
+      "address": "0xaB93207d3Af2f205f60b30A5b7E4470aFD7936c0",
+      "error": "Bytecode mismatch - deployed from npm package artifacts",
+      "reason": "Contract deployed using pre-compiled npm package artifacts, but Hardhat verify compiles locally with different settings"
+    },
+    "NFTDescriptor": {
+      "status": "requires_manual_verification",
+      "address": "0xdE0c564A709577aEc7EA660BD860725Cd75Cf338",
+      "error": "Bytecode mismatch - deployed from npm package artifacts",
+      "reason": "Contract deployed using pre-compiled npm package artifacts, but Hardhat verify compiles locally with different settings"
+    },
+    "NonfungibleTokenPositionDescriptor": {
+      "status": "requires_manual_verification",
+      "address": "0x73a67C799ED6d2D783A8385d1efB0d2B0A32ef25",
+      "error": "Bytecode mismatch - deployed from npm package artifacts",
+      "reason": "Contract deployed using pre-compiled npm package artifacts, but Hardhat verify compiles locally with different settings"
+    },
+    "Proxy": {
+      "status": "skipped",
+      "address": "0x73a67C799ED6d2D783A8385d1efB0d2B0A32ef25"
+    },
+    "ProxyAdmin": {
+      "status": "info",
+      "address": "0xc5993575A2FF8D10c0A0e606A4827468331F570F",
+      "note": "This is an EOA address, not a contract"
+    },
+    "NonfungiblePositionManager": {
+      "status": "requires_manual_verification",
+      "address": "0x32c619c1be7F5C54Ad58C51b39c28557da8d0c47",
+      "error": "Bytecode mismatch - deployed from npm package artifacts",
+      "reason": "Contract deployed using pre-compiled npm package artifacts, but Hardhat verify compiles locally with different settings"
+    },
+    "AlgebraInterfaceMulticall": {
+      "status": "requires_manual_verification",
+      "address": "0x5E36d9085c31A0711468Dd0B8B220c7DC4b61468",
+      "error": "Bytecode mismatch - deployed from npm package artifacts",
+      "reason": "Contract deployed using pre-compiled npm package artifacts, but Hardhat verify compiles locally with different settings"
+    },
+    "AlgebraEternalFarming": {
+      "status": "requires_manual_verification",
+      "address": "0xe78246153CCCf2956F98380E83aBC3B60CC1bcFe",
+      "error": "Bytecode mismatch - deployed from npm package artifacts",
+      "reason": "Contract deployed using pre-compiled npm package artifacts, but Hardhat verify compiles locally with different settings"
+    },
+    "FarmingCenter": {
+      "status": "requires_manual_verification",
+      "address": "0xD06dc8F4959205aa1B6eEB4E4E43Dd715C0033B1",
+      "error": "Bytecode mismatch - deployed from npm package artifacts",
+      "reason": "Contract deployed using pre-compiled npm package artifacts, but Hardhat verify compiles locally with different settings"
+    }
+  }
+}

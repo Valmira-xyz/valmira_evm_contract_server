@@ -1,0 +1,10 @@
+{
+  "network": "somniaTestnet",
+  "chainId": 50312,
+  "contract": "Disperse",
+  "address": "0xcAE7cDCf4168100377ACc1697d53513aDADd55FA",
+  "deployer": "0xc5993575A2FF8D10c0A0e606A4827468331F570F",
+  "txHash": "0x7337045a4b7477a8ebccbcc4ec8213e4a844307b2726717f586c078a1787ef9f",
+  "blockNumber": 228112691,
+  "timestamp": "2025-11-14T01:11:59.221Z"
+}

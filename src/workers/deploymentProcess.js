@@ -33,24 +33,32 @@ if (process.env.NODE_ENV !== 'production') {
 
 // Network configuration
 const NETWORK_CONFIG = {
-  'bsc': {
+  'BSC_MAINNET': {
     rpcUrl: "https://bsc-dataseed.binance.org/",
     apiKey: process.env.BSCSCAN_API_KEY,
     name: 'bsc'
   },
-  'bsc-testnet': {
-    rpcUrl: "https://data-seed-prebsc-1-s1.binance.org:8545",
-    apiKey: process.env.BSCSCAN_API_KEY,
-    name: 'bsc-testnet'
+  'ETH_MAINNET': {
+    rpcUrl: "https://eth-mainnet.g.alchemy.com/v2/wpn2uT8ZN-kiu4dr5ljQK/",
+    apiKey: process.env.ETHERSCAN_API_KEY,
+    name: 'eth'
   },
-  'somniaTestnet': {
-    rpcUrl: "https://dream-rpc.somnia.network/",
+  'SOMNIA_TESTNET': {
+    rpcUrl: 'https://rpc.ankr.com/somnia_testnet/1f454996729dc64f2e23f2a04624bb2765668e46a367e145f7d767fd12bbb108',
     apiKey: "empty", // Somnia uses custom verification, apiKey set to empty
     name: 'somniaTestnet',
-    routerAddress: '0xb1618E58Fa411b94da5247Bc0d808DB43f3629BE', // With WSTT support
-    wsttAddress: '0x40722b4Eb73194eDB6cf518B94b022f1877b0811', // Wrapped STT
-    factoryAddress: '0x96eE1a0cb578AB2F8d7769c155D4A694d5845477' // Factory
-  }
+    routerAddress: '0xaB93207d3Af2f205f60b30A5b7E4470aFD7936c0', // With WSTT support
+    wsttAddress: '0xDa928F6A86497b3d3571fC4c2bAD04448Cc756A9', // Wrapped STT
+    factoryAddress: '0xA9e79B95F2ea2fB089B8F0744CDDA2c22eB00211' // Factory
+  },
+  'SOMNIA_MAINNET': {
+    rpcUrl: 'https://rpc.ankr.com/somnia_mainnet/1f454996729dc64f2e23f2a04624bb2765668e46a367e145f7d767fd12bbb108',
+    apiKey: "empty", // Somnia uses custom verification, apiKey set to empty
+    name: 'somniaMainnet',
+    routerAddress: '0x1582f6f3D26658F7208A799Be46e34b1f366CE44', // With WSTT support
+    wsttAddress: '0x046EDe9564A72571df6F5e44d0405360c0f4dCab', // Wrapped STT
+    factoryAddress: '0x0ccff3D02A3a200263eC4e0Fdb5E60a56721B8Ae' // Factory
+  },
 };
 
 function replaceSpacesWithUnderscores(str) {
@@ -60,7 +68,16 @@ function replaceSpacesWithUnderscores(str) {
 function generateHardhatVerifyCommand(args, deployedContractAddress, templateNumber, customContractPath, tokenName, network) {
   // Define the network for which the contract is deployed
   // Use the network parameter passed to the function
-  const networkName = network || process.env.CHAIN_NAME;
+  const networkKey = network || process.env.CHAIN_NAME;
+  
+  // Get the network configuration and use the hardhat network name
+  const networkConfig = NETWORK_CONFIG[networkKey];
+  if (!networkConfig) {
+    throw new Error(`Unsupported network: ${networkKey}`);
+  }
+  
+  // Use the hardhat network name from config (e.g., 'somniaTestnet' instead of 'SOMNIA_TESTNET')
+  const networkName = networkConfig.name;
 
   // Start building the command
   let command = `npx hardhat verify --network ${networkName} ${deployedContractAddress}`;

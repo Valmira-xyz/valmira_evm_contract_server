@@ -1,0 +1,14 @@
+{
+  "network": "somniaTestnet",
+  "chainId": 50312,
+  "token": {
+    "address": "0x67803050bd4ded469eb4944c9ab6eD6ecdED2f5F",
+    "symbol": "TST",
+    "name": "Test Token",
+    "decimals": 18,
+    "totalSupply": "1000000000000000000000000"
+  },
+  "deployer": "0xc5993575A2FF8D10c0A0e606A4827468331F570F",
+  "txHash": "0xffcb69eb0993fb9e96cf6b162050095b52b136f8fdfdbf70345218c5098744e8",
+  "timestamp": "2025-11-14T00:37:58.858Z"
+}

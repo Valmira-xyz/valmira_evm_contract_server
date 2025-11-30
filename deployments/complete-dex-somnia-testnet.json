@@ -1,0 +1,26 @@
+{
+  "network": "somniaTestnet",
+  "chainId": 50312,
+  "timestamp": "2025-11-14T00:14:16.037Z",
+  "deployer": "0xc5993575A2FF8D10c0A0e606A4827468331F570F",
+  "contracts": {
+    "WSTT": {
+      "address": "0xDa928F6A86497b3d3571fC4c2bAD04448Cc756A9",
+      "txHash": "0x262fbb17777d7770737ba0996868b05818d19319bcc910fffbc0733ebf9af325",
+      "blockNumber": 228078302
+    },
+    "SimpleDEXFactory": {
+      "address": "0x21F3C1b17863C96bedce41D7bdfC17BD6C5bb915",
+      "txHash": "0x46cc3e0680c43e89a90e30b2f7517767c8df27bab97c242cd4178e927006a0b1",
+      "blockNumber": 228078351,
+      "feeToSetter": "0xc5993575A2FF8D10c0A0e606A4827468331F570F"
+    },
+    "SimpleDEXRouter": {
+      "address": "0x034f00000a5ac06E68279A6A5bF78B9f075C4400",
+      "txHash": "0x563caf4c25acb5bad766003cec8d382ba03d0475d9e2b20ff7701dc51f25fe1d",
+      "blockNumber": 228078397,
+      "factory": "0x21F3C1b17863C96bedce41D7bdfC17BD6C5bb915",
+      "weth": "0xDa928F6A86497b3d3571fC4c2bAD04448Cc756A9"
+    }
+  }
+}

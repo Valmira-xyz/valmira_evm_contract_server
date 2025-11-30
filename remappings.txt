@@ -1,0 +1,5 @@
+@cryptoalgebra/integral-core/contracts/=../Algebra/src/core/contracts/
+@cryptoalgebra/integral-periphery/contracts/=../Algebra/src/periphery/contracts/
+@cryptoalgebra/integral-farming/contracts/=../Algebra/src/farming/contracts/
+@cryptoalgebra/integral-base-plugin/contracts/=../Algebra/src/plugin/contracts/
+@openzeppelin/contracts/=node_modules/@openzeppelin/contracts/

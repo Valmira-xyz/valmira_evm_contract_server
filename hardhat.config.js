@@ -1,5 +1,5 @@
 const dotenv = require("dotenv");
-require("@nomiclabs/hardhat-etherscan");
+require("@nomicfoundation/hardhat-verify");
 require("@nomiclabs/hardhat-waffle");
 require("@typechain/hardhat");
 require("hardhat-gas-reporter");
@@ -16,7 +16,53 @@ const PRIVATE_KEY = process.env.PRIVATE_KEY;
 const ACCOUNTS = PRIVATE_KEY ? [PRIVATE_KEY] : [];
 
 module.exports = {
-    solidity: "0.8.24",
+    solidity: {
+        compilers: [
+            {
+                version: "0.8.24",
+                settings: {
+                    optimizer: {
+                        enabled: true,
+                        runs: 9999,
+                    },
+                    // Enable path remapping for @cryptoalgebra imports
+                    // Note: @openzeppelin imports are resolved automatically by Hardhat from node_modules
+                    remappings: [
+                        "@cryptoalgebra/integral-core/contracts/=../Algebra/src/core/contracts/",
+                        "@cryptoalgebra/integral-periphery/contracts/=../Algebra/src/periphery/contracts/",
+                        "@cryptoalgebra/integral-farming/contracts/=../Algebra/src/farming/contracts/",
+                        "@cryptoalgebra/integral-base-plugin/contracts/=../Algebra/src/plugin/contracts/",
+                    ]
+                }
+            },
+            {
+                version: "0.8.20",
+                settings: {
+                    optimizer: {
+                        enabled: true,
+                        runs: 9999,
+                    },
+                    // Enable path remapping for @cryptoalgebra imports
+                    // Note: @openzeppelin imports are resolved automatically by Hardhat from node_modules
+                    remappings: [
+                        "@cryptoalgebra/integral-core/contracts/=../Algebra/src/core/contracts/",
+                        "@cryptoalgebra/integral-periphery/contracts/=../Algebra/src/periphery/contracts/",
+                        "@cryptoalgebra/integral-farming/contracts/=../Algebra/src/farming/contracts/",
+                        "@cryptoalgebra/integral-base-plugin/contracts/=../Algebra/src/plugin/contracts/",
+                    ]
+                }
+            },
+            {
+                version: "0.8.10",
+                settings: {
+                    optimizer: {
+                        enabled: true,
+                        runs: 9999,  // Back to original 9999
+                    },
+                }
+            }
+        ]
+    },
     defaultNetwork: "bsc",
     networks: {
         localhost: {
@@ -43,7 +89,7 @@ module.exports = {
         somniaTestnet: {
             url: "https://dream-rpc.somnia.network/",
             chainId: 50312,
-            gasPrice: 20000000000,
+            // Let Hardhat estimate gas price automatically
             accounts: ACCOUNTS,
         },
         hardhat: {
@@ -83,18 +129,21 @@ module.exports = {
         cache: "./cache",
         artifacts: "./artifacts",
     },
-    settings: {
-        optimizer: {
-            enabled: true,
-            runs: 9999,
-        }
-    },
+    // Exclude test files from compilation
+    // This prevents Hardhat from trying to compile test contracts from symlinked Algebra folders
+    exclude: [
+        "**/test/**",
+        "**/test/**/*",
+        "**/*Test.sol",
+        "**/*Mock*.sol",
+        "**/echidna/**",
+    ],
     mocha: {
         timeout: 20000,
     },
 
     sourcify: {
-        enabled: true
+        enabled: false  // Disable Sourcify as it doesn't support Somnia Mainnet (chainId 5031)
     },
     allowUnlimitedContractSize: true,
 };
